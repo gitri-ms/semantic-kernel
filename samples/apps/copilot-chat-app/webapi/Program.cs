@@ -52,7 +52,8 @@ public sealed class Program
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
             .AddCors()
-            .AddControllers();
+            .AddControllers()
+            .ConfigureControllerFeatureProviders(builder.Configuration);
         builder.Services.AddHealthChecks();
 
         // Configure middleware and endpoints
