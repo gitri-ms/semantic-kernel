@@ -4,37 +4,57 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SemanticKernel.Service.CopilotChat.Controllers;
 
 namespace SemanticKernel.Service.CopilotChat.Extensions;
 
 public static class MvcBuilderExtensions
 {
-    public static IMvcBuilder ConfigureCopilotChatControllers(this IMvcBuilder builder, IConfiguration configuration)
+    public static IMvcBuilder ConfigureCopilotChatRequiredControllers(this IMvcBuilder builder)
     {
-        // TODO: get this list from somewhere - configuration? list of supported features?
-        var supportedControllerTypes = new List<Type>
+        var requiredControllerTypes = new List<Type>
         {
-            typeof(CopilotChat.Controllers.BotController),
-            typeof(CopilotChat.Controllers.ChatController),
-            typeof(CopilotChat.Controllers.ChatHistoryController),
-            typeof(CopilotChat.Controllers.DocumentImportController),
-            typeof(CopilotChat.Controllers.SpeechTokenController)
+            typeof(ChatController),
+            typeof(ChatHistoryController),
+            typeof(DocumentImportController),
+            typeof(SpeechTokenController),
         };
 
+        builder.RemoveDefaultControllers()
+            .ConfigureApplicationPartManager(mgr =>
+            {
+                mgr.FeatureProviders.Add(new CustomControllerFeatureProvider(requiredControllerTypes));
+            });
+        return builder;
+    }
+
+    public static IMvcBuilder AddCopilotChatBotSharing(this IMvcBuilder builder)
+    {
+        // Enable the bot controller
         builder.ConfigureApplicationPartManager(mgr =>
         {
-            // Override the default controller feature providers to allow us toi specify which controllers should be included.
+            mgr.FeatureProviders.Add(new BotControllerFeatureProvider());
+        });
+        return builder;
+    }
+
+    // Hypothetical "bot sharing" nuget could include Models/Bot.cs, Controllers/BotController.cs,
+    // the BotControllerFeatureProvider class, and the AddBotSharing extension to IMvcBuilder.
+
+    #region Private methods
+    private static IMvcBuilder RemoveDefaultControllers(this IMvcBuilder builder)
+    {
+        builder.ConfigureApplicationPartManager(mgr =>
+        {
+            // Remove the default controller feature providers. This will allow us to later specify which controllers we want to enable.
             var defaultControllerFeatureProviders = mgr.FeatureProviders.OfType<ControllerFeatureProvider>().ToList();
             foreach (var provider in defaultControllerFeatureProviders)
             {
                 mgr.FeatureProviders.Remove(provider);
             }
-            mgr.FeatureProviders.Add(new CustomControllerFeatureProvider(supportedControllerTypes));
         });
-
         return builder;
     }
-
+    #endregion
 }

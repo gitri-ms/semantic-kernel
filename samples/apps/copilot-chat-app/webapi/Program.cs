@@ -53,7 +53,8 @@ public sealed class Program
             .AddSwaggerGen()
             .AddCors()
             .AddControllers()
-            .ConfigureCopilotChatControllers(builder.Configuration);
+            .ConfigureCopilotChatRequiredControllers()
+            .AddCopilotChatBotSharing();
         builder.Services.AddHealthChecks();
 
         // Configure middleware and endpoints
