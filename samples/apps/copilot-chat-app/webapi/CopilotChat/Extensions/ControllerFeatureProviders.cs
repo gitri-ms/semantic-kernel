@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft. All rights reserved.
+
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using SemanticKernel.Service.CopilotChat.Controllers;
 
 namespace SemanticKernel.Service.CopilotChat.Extensions;

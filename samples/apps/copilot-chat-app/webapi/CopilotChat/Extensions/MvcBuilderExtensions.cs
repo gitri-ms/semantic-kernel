@@ -40,7 +40,7 @@ public static class MvcBuilderExtensions
     }
 
     // Hypothetical "bot sharing" nuget could include Models/Bot.cs, Controllers/BotController.cs,
-    // the BotControllerFeatureProvider class, and the AddBotSharing extension to IMvcBuilder.
+    // the BotControllerFeatureProvider class, and the AddCopilotChatBotSharing extension above.
 
     #region Private methods
     private static IMvcBuilder RemoveDefaultControllers(this IMvcBuilder builder)
