@@ -19,8 +19,6 @@ public static class MvcBuilderExtensions
         {
             typeof(ChatController),
             typeof(ChatHistoryController),
-            typeof(DocumentImportController),
-            typeof(SpeechTokenController),
         };
 
         builder.RemoveDefaultControllers()
