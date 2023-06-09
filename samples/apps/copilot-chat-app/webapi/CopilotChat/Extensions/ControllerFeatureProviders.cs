@@ -25,3 +25,13 @@ public class BotControllerFeatureProvider : CustomControllerFeatureProvider
 {
     public BotControllerFeatureProvider() : base(new List<Type> { typeof(BotController) }) { }
 }
+
+public class SpeechTokenControllerFeatureProvider : CustomControllerFeatureProvider
+{
+    public SpeechTokenControllerFeatureProvider() : base(new List<Type> { typeof(SpeechTokenController) }) { }
+}
+
+public class DocumentImportControllerFeatureProvider : CustomControllerFeatureProvider
+{
+    public DocumentImportControllerFeatureProvider() : base(new List<Type> { typeof(DocumentImportController) }) { }
+}

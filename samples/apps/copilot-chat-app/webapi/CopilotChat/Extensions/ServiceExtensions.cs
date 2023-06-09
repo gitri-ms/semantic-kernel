@@ -39,16 +39,16 @@ public static class CopilotChatServiceExtensions
             .PostConfigure(TrimStringProperties);
 
         // Azure speech token configuration
-        services.AddOptions<AzureSpeechOptions>()
+        /*services.AddOptions<AzureSpeechOptions>()
             .Bind(configuration.GetSection(AzureSpeechOptions.PropertyName))
             .ValidateOnStart()
-            .PostConfigure(TrimStringProperties);
+            .PostConfigure(TrimStringProperties);*/
 
         // Bot schema configuration
-        services.AddOptions<BotSchemaOptions>()
+        /*services.AddOptions<BotSchemaOptions>()
             .Bind(configuration.GetSection(BotSchemaOptions.PropertyName))
             .ValidateOnStart()
-            .PostConfigure(TrimStringProperties);
+            .PostConfigure(TrimStringProperties);*/
 
         // Document memory options
         services.AddOptions<DocumentMemoryOptions>()
@@ -142,7 +142,7 @@ public static class CopilotChatServiceExtensions
     /// <summary>
     /// Trim all string properties, recursively.
     /// </summary>
-    private static void TrimStringProperties<T>(T options) where T : class
+    internal static void TrimStringProperties<T>(T options) where T : class
     {
         Queue<object> targets = new();
         targets.Enqueue(options);

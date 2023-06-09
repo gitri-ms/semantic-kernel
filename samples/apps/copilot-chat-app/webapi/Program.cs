@@ -54,7 +54,9 @@ public sealed class Program
             .AddCors()
             .AddControllers()
             .ConfigureCopilotChatRequiredControllers()
-            .AddCopilotChatBotSharing();
+            .AddCopilotChatBotSharing(builder.Configuration)
+            .AddCopilotChatSpeechToken(builder.Configuration)
+            .AddCopilotChatDocumentImport();
         builder.Services.AddHealthChecks();
 
         // Configure middleware and endpoints
