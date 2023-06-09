@@ -101,11 +101,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InternalUtilities", "Intern
 		src\InternalUtilities\InternalUtilities.props = src\InternalUtilities\InternalUtilities.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.Memory.Weaviate", "src\Connectors\Connectors.Memory.Weaviate\Connectors.Memory.Weaviate.csproj", "{6AAB0620-33A1-4A98-A63B-6560B9BA47A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Memory.Weaviate", "src\Connectors\Connectors.Memory.Weaviate\Connectors.Memory.Weaviate.csproj", "{6AAB0620-33A1-4A98-A63B-6560B9BA47A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenApiSkillsExample", "..\samples\dotnet\openapi-skills\OpenApiSkillsExample.csproj", "{4D91A3E0-C404-495B-AD4A-411C4E83CF54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Memory.DuckDB", "src\Connectors\Connectors.Memory.DuckDB\Connectors.Memory.DuckDB.csproj", "{50FAE231-6F24-4779-9D02-12ABBC9A49E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopilotChatBotSharing", "..\samples\apps\copilot-chat-app\CopilotChatBotSharing\CopilotChatBotSharing.csproj", "{A09D1D87-10BB-4336-A8C3-5106EA0FE751}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -310,6 +312,12 @@ Global
 		{50FAE231-6F24-4779-9D02-12ABBC9A49E2}.Publish|Any CPU.Build.0 = Publish|Any CPU
 		{50FAE231-6F24-4779-9D02-12ABBC9A49E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50FAE231-6F24-4779-9D02-12ABBC9A49E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Publish|Any CPU.ActiveCfg = Debug|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Publish|Any CPU.Build.0 = Debug|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,6 +362,7 @@ Global
 		{6AAB0620-33A1-4A98-A63B-6560B9BA47A4} = {0247C2C9-86C3-45BA-8873-28B0948EDC0C}
 		{4D91A3E0-C404-495B-AD4A-411C4E83CF54} = {FA3720F1-C99A-49B2-9577-A940257098BF}
 		{50FAE231-6F24-4779-9D02-12ABBC9A49E2} = {0247C2C9-86C3-45BA-8873-28B0948EDC0C}
+		{A09D1D87-10BB-4336-A8C3-5106EA0FE751} = {FA3720F1-C99A-49B2-9577-A940257098BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBDC56A3-86AD-4323-AA0F-201E59123B83}
