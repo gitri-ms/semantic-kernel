@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SemanticKernel.Service.CopilotChat.BotSharing.Extensions;
+namespace SemanticKernel.Service.CopilotChat.Documents.Extensions;
 
 public static class MvcBuilderExtensions
 {
@@ -11,8 +11,9 @@ public static class MvcBuilderExtensions
         // Enable the bot controller
         builder.ConfigureApplicationPartManager(mgr =>
         {
-            mgr.FeatureProviders.Add(new BotControllerFeatureProvider());
+            mgr.FeatureProviders.Add(new DocumentImportControllerFeatureProvider());
         });
         return builder;
     }
+
 }

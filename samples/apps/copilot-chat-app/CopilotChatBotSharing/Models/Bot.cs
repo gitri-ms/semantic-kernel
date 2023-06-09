@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using Microsoft.SemanticKernel.Memory;
-using SemanticKernel.Service.CopilotChat.Options;
+using SemanticKernel.Service.CopilotChat.BotSharing.Options;
 
 namespace SemanticKernel.Service.CopilotChat.BotSharing.Models;
 

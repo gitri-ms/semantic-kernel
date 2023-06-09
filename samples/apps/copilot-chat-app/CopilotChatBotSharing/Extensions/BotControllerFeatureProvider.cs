@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using System.Reflection;
 using SemanticKernel.Service.CopilotChat.BotSharing.Controllers;
 
 namespace SemanticKernel.Service.CopilotChat.BotSharing.Extensions;
 
-public class BotControllerFeatureProvider : CustomControllerFeatureProvider
+public class BotControllerFeatureProvider : ControllerFeatureProvider
 {
-    public BotControllerFeatureProvider() : base(new List<Type> { typeof(BotController) }) { }
+    protected override bool IsController(TypeInfo typeInfo)
+    {
+        return base.IsController(typeInfo) && typeInfo == typeof(BotController).GetTypeInfo();
+    }
 }
