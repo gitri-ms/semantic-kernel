@@ -31,7 +31,6 @@ public class OpenAIFunctionResponse
     public string FullyQualifiedName =>
         this.PluginName.IsNullOrEmpty() ? this.FunctionName : string.Join(OpenAIFunction.NameSeparator, this.PluginName, this.FunctionName);
 
-
     /// <summary>
     /// Parameter values
     /// </summary>

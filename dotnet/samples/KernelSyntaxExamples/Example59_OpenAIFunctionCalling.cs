@@ -40,7 +40,6 @@ public static class Example59_OpenAIFunctionCalling
         // Set FunctionCall to auto to let the model choose the best function to use.
         requestSettings.FunctionCall = OpenAIRequestSettings.FunctionCallAuto;
         await CompleteChatWithFunctionsAsync("What computer tablets are currently available for under $200?", chatHistory, chatCompletion, kernel, requestSettings);
-
     }
 
     private static async Task<IKernel> InitializeKernelAsync()
@@ -99,10 +98,10 @@ public static class Example59_OpenAIFunctionCalling
                 //Console.WriteLine(result);
 
                 // Add the function result to chat history
-                chatHistory.AddMessage(AuthorRole.Function, functionResult, functionResponse.FullyQualifiedName);
+                chatHistory.AddFunctionMessage(functionResult, functionResponse.FullyQualifiedName);
 
                 // Get another completion
-                requestSettings.FunctionCall = OpenAIRequestSettings.FunctionCallNone; // or set FunctionCallNone
+                requestSettings.FunctionCall = OpenAIRequestSettings.FunctionCallNone;
                 // Send request
                 chatResult = (await chatCompletion.GetChatCompletionsAsync(chatHistory, requestSettings))[0];
 
