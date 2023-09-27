@@ -13,7 +13,7 @@ public class ChatHistory : List<ChatMessageBase>
 {
     private sealed class ChatMessage : ChatMessageBase
     {
-        public ChatMessage(AuthorRole authorRole, string content) : base(authorRole, content)
+        public ChatMessage(AuthorRole authorRole, string content, string? name = null) : base(authorRole, content, name)
         {
         }
     }
@@ -28,9 +28,9 @@ public class ChatHistory : List<ChatMessageBase>
     /// </summary>
     /// <param name="authorRole">Role of the message author</param>
     /// <param name="content">Message content</param>
-    public void AddMessage(AuthorRole authorRole, string content)
+    public void AddMessage(AuthorRole authorRole, string content, string? name = null)
     {
-        this.Add(new ChatMessage(authorRole, content));
+        this.Add(new ChatMessage(authorRole, content, name));
     }
 
     /// <summary>
@@ -39,9 +39,9 @@ public class ChatHistory : List<ChatMessageBase>
     /// <param name="index">Index of the message to insert</param>
     /// <param name="authorRole">Role of the message author</param>
     /// <param name="content">Message content</param>
-    public void InsertMessage(int index, AuthorRole authorRole, string content)
+    public void InsertMessage(int index, AuthorRole authorRole, string content, string? name = null)
     {
-        this.Insert(index, new ChatMessage(authorRole, content));
+        this.Insert(index, new ChatMessage(authorRole, content, name));
     }
 
     /// <summary>

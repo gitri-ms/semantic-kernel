@@ -39,7 +39,8 @@ public static class Example59_OpenAIFunctionCalling
 
         // Set FunctionCall to auto to let the model choose the best function to use.
         requestSettings.FunctionCall = OpenAIRequestSettings.FunctionCallAuto;
-        await CompleteChatWithFunctionsAsync("What computer tablets are available for under $200?", chatHistory, chatCompletion, kernel, requestSettings);
+        await CompleteChatWithFunctionsAsync("What computer tablets are currently available for under $200?", chatHistory, chatCompletion, kernel, requestSettings);
+
     }
 
     private static async Task<IKernel> InitializeKernelAsync()
@@ -93,13 +94,26 @@ public static class Example59_OpenAIFunctionCalling
             // you can invoke it using the following code.
             if (kernel.Functions.TryGetFunctionAndContext(functionResponse, out ISKFunction? func, out ContextVariables? context))
             {
-                var result = (await kernel.RunAsync(func, context)).GetValue<string>();
-                if (!string.IsNullOrEmpty(result))
-                {
-                    Console.WriteLine(result);
+                var functionResult = (await kernel.RunAsync(func, context)).GetValue<string>() ?? string.Empty;
 
-                    // Add the function result to chat history
-                    chatHistory.AddAssistantMessage(result);
+                //Console.WriteLine(result);
+
+                // Add the function result to chat history
+                chatHistory.AddMessage(AuthorRole.Function, functionResult, functionResponse.FullyQualifiedName);
+
+                // Get another completion
+                requestSettings.FunctionCall = OpenAIRequestSettings.FunctionCallNone; // or set FunctionCallNone
+                // Send request
+                chatResult = (await chatCompletion.GetChatCompletionsAsync(chatHistory, requestSettings))[0];
+
+                // Check for message response
+                chatMessage = await chatResult.GetChatMessageAsync();
+                if (!string.IsNullOrEmpty(chatMessage.Content))
+                {
+                    Console.WriteLine($"Assistant response: {chatMessage.Content}");
+
+                    // Add the response to chat history
+                    chatHistory.AddAssistantMessage(chatMessage.Content);
                 }
             }
             else
