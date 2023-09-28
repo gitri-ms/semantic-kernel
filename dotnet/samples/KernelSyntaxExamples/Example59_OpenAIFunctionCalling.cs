@@ -94,8 +94,7 @@ public static class Example59_OpenAIFunctionCalling
             if (kernel.Functions.TryGetFunctionAndContext(functionResponse, out ISKFunction? func, out ContextVariables? context))
             {
                 var functionResult = (await kernel.RunAsync(func, context)).GetValue<string>() ?? string.Empty;
-
-                //Console.WriteLine(result);
+                // Console.WriteLine(functionResult);
 
                 // Add the function result to chat history
                 chatHistory.AddFunctionMessage(functionResult, functionResponse.FullyQualifiedName);

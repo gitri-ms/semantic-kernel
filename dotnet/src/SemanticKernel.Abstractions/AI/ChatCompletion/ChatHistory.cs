@@ -31,7 +31,7 @@ public class ChatHistory : List<ChatMessageBase>
     /// <param name="name">If role is function, name of the function that produced the content</param>
     public void AddMessage(AuthorRole authorRole, string content, string? name = null)
     {
-        this.Add(new ChatMessage(authorRole, content, name ?? string.Empty));
+        this.Add(new ChatMessage(authorRole, content, name));
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class ChatHistory : List<ChatMessageBase>
     /// <param name="name">If role is function, name of the function that produced the content</param>
     public void InsertMessage(int index, AuthorRole authorRole, string content, string? name = null)
     {
-        this.Insert(index, new ChatMessage(authorRole, content, name ?? string.Empty));
+        this.Insert(index, new ChatMessage(authorRole, content, name));
     }
 
     /// <summary>
