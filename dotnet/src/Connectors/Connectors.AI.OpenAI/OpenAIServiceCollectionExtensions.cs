@@ -10,11 +10,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.AI.ChatCompletion;
 using Microsoft.SemanticKernel.AI.Embeddings;
+using Microsoft.SemanticKernel.AI.SpeechRecognition;
 using Microsoft.SemanticKernel.AI.TextGeneration;
 using Microsoft.SemanticKernel.AI.TextToImage;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.ChatCompletionWithData;
+using Microsoft.SemanticKernel.Connectors.AI.OpenAI.SpeechRecognition;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.TextEmbedding;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.TextGeneration;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI.TextToImage;
@@ -1219,6 +1221,55 @@ public static class OpenAIServiceCollectionExtensions
             new OpenAITextToImageService(
                 apiKey,
                 orgId,
+                HttpClientProvider.GetHttpClient(serviceProvider),
+                serviceProvider.GetService<ILoggerFactory>()));
+    }
+
+    #endregion
+
+    #region Speech Recognition
+
+    public static KernelBuilder WithAzureOpenAISpeechRecognition(
+        this KernelBuilder builder,
+        string deploymentName,
+        string modelId,
+        string endpoint,
+        string apiKey,
+        string? serviceId = null,
+        HttpClient? httpClient = null)
+    {
+        Verify.NotNull(builder);
+        Verify.NotNullOrWhiteSpace(endpoint);
+        Verify.NotNullOrWhiteSpace(apiKey);
+
+        return builder.WithServices(c =>
+        {
+            c.AddKeyedSingleton<ISpeechRecognitionService>(serviceId, (serviceProvider, _) =>
+                new AzureOpenAISpeechRecognitionService(
+                    endpoint,
+                    modelId,
+                    apiKey,
+                    HttpClientProvider.GetHttpClient(httpClient, serviceProvider),
+                    serviceProvider.GetService<ILoggerFactory>()));
+        });
+    }
+
+    public static IServiceCollection AddAzureOpenAISpeechRecognition(
+        this IServiceCollection services,
+        string endpoint,
+        string modelId,
+        string apiKey,
+        string? serviceId = null)
+    {
+        Verify.NotNull(services);
+        Verify.NotNullOrWhiteSpace(endpoint);
+        Verify.NotNullOrWhiteSpace(apiKey);
+
+        return services.AddKeyedSingleton<ISpeechRecognitionService>(serviceId, (serviceProvider, _) =>
+            new AzureOpenAISpeechRecognitionService(
+                endpoint,
+                modelId,
+                apiKey,
                 HttpClientProvider.GetHttpClient(serviceProvider),
                 serviceProvider.GetService<ILoggerFactory>()));
     }
