@@ -1231,10 +1231,10 @@ public static class OpenAIServiceCollectionExtensions
 
     public static KernelBuilder WithAzureOpenAISpeechRecognition(
         this KernelBuilder builder,
-        string deploymentName,
         string modelId,
         string endpoint,
         string apiKey,
+        string apiVersion,
         string? serviceId = null,
         HttpClient? httpClient = null)
     {
@@ -1249,6 +1249,7 @@ public static class OpenAIServiceCollectionExtensions
                     endpoint,
                     modelId,
                     apiKey,
+                    apiVersion,
                     HttpClientProvider.GetHttpClient(httpClient, serviceProvider),
                     serviceProvider.GetService<ILoggerFactory>()));
         });
@@ -1259,6 +1260,7 @@ public static class OpenAIServiceCollectionExtensions
         string endpoint,
         string modelId,
         string apiKey,
+        string apiVersion,
         string? serviceId = null)
     {
         Verify.NotNull(services);
@@ -1270,6 +1272,7 @@ public static class OpenAIServiceCollectionExtensions
                 endpoint,
                 modelId,
                 apiKey,
+                apiVersion,
                 HttpClientProvider.GetHttpClient(serviceProvider),
                 serviceProvider.GetService<ILoggerFactory>()));
     }
