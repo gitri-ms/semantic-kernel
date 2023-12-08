@@ -88,5 +88,6 @@
     <EmbeddedResource Include="Resources\EnglishRoberta\dict.txt" />
     <EmbeddedResource Include="Resources\EnglishRoberta\encoder.json" />
     <EmbeddedResource Include="Resources\EnglishRoberta\vocab.bpe" />
+    <EmbeddedResource Include="Resources\SpeechRecognition\wikipediaOcelot.wav" />
   </ItemGroup>
 </Project>

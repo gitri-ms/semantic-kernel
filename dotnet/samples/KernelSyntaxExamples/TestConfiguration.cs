@@ -23,6 +23,7 @@ public sealed class TestConfiguration
     public static OpenAIConfig OpenAI => LoadSection<OpenAIConfig>();
     public static AzureOpenAIConfig AzureOpenAI => LoadSection<AzureOpenAIConfig>();
     public static AzureOpenAIEmbeddingsConfig AzureOpenAIEmbeddings => LoadSection<AzureOpenAIEmbeddingsConfig>();
+    public static AzureOpenAISpeechConfig AzureOpenAISpeech => LoadSection<AzureOpenAISpeechConfig>();
     public static AzureAISearchConfig AzureAISearch => LoadSection<AzureAISearchConfig>();
     public static QdrantConfig Qdrant => LoadSection<QdrantConfig>();
     public static WeaviateConfig Weaviate => LoadSection<WeaviateConfig>();
@@ -81,6 +82,14 @@ public sealed class TestConfiguration
         public string DeploymentName { get; set; }
         public string Endpoint { get; set; }
         public string ApiKey { get; set; }
+    }
+
+    public class AzureOpenAISpeechConfig
+    {
+        public string DeploymentName { get; set; }
+        public string Endpoint { get; set; }
+        public string ApiKey { get; set; }
+        public string ApiVersion { get; set; }
     }
 
     public class AzureAISearchConfig
