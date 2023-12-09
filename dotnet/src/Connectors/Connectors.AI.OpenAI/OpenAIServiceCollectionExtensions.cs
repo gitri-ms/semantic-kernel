@@ -1231,7 +1231,7 @@ public static class OpenAIServiceCollectionExtensions
 
     public static KernelBuilder WithAzureOpenAISpeechRecognition(
         this KernelBuilder builder,
-        string modelId,
+        string deploymentName,
         string endpoint,
         string apiKey,
         string apiVersion,
@@ -1246,8 +1246,8 @@ public static class OpenAIServiceCollectionExtensions
         {
             c.AddKeyedSingleton<ISpeechRecognitionService>(serviceId, (serviceProvider, _) =>
                 new AzureOpenAISpeechRecognitionService(
+                    deploymentName,
                     endpoint,
-                    modelId,
                     apiKey,
                     apiVersion,
                     HttpClientProvider.GetHttpClient(httpClient, serviceProvider),
@@ -1257,8 +1257,8 @@ public static class OpenAIServiceCollectionExtensions
 
     public static IServiceCollection AddAzureOpenAISpeechRecognition(
         this IServiceCollection services,
+        string deploymentName,
         string endpoint,
-        string modelId,
         string apiKey,
         string apiVersion,
         string? serviceId = null)
@@ -1269,8 +1269,8 @@ public static class OpenAIServiceCollectionExtensions
 
         return services.AddKeyedSingleton<ISpeechRecognitionService>(serviceId, (serviceProvider, _) =>
             new AzureOpenAISpeechRecognitionService(
+                deploymentName,
                 endpoint,
-                modelId,
                 apiKey,
                 apiVersion,
                 HttpClientProvider.GetHttpClient(serviceProvider),

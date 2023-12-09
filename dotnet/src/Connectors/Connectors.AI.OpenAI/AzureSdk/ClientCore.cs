@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -463,6 +464,44 @@ internal abstract class ClientCore
         return (await this.GetChatMessageContentsAsync(chat, chatSettings, kernel, cancellationToken).ConfigureAwait(false))
             .Select(chat => new TextContent(chat.Content, chat.ModelId, chat, Encoding.UTF8, chat.Metadata))
             .ToList();
+    }
+
+    internal async Task<string> GetTextFromSpeechAsync(
+        Stream audioStream,
+        string? prompt,
+        PromptExecutionSettings? executionSettings, // TODO: create SpeechRecognitionExecutionSettings / AudioExecutionSettings / TranscriptionSettings
+        Kernel? kernel,
+        CancellationToken cancellationToken = default)
+    {
+        // settings:
+        // sourceLanguage
+        // targetLanguage
+        // prompt
+        // temperature
+        // responseFormat
+
+        var transcriptionOptions = new AudioTranscriptionOptions
+        {
+            AudioData = BinaryData.FromStream(audioStream),
+            DeploymentName = this.DeploymentOrModelName,
+            Prompt = string.Empty, // TODO
+            Language = "en", // TODO
+            Temperature = 0, // TODO
+            //ResponseFormat = AudioTranscriptionFormat.Simple, Srt, Verbose, Vtt
+        };
+        var response = await RunRequestAsync(() => this.Client.GetAudioTranscriptionAsync(transcriptionOptions, cancellationToken)).ConfigureAwait(false);
+
+        var translationOptions = new AudioTranslationOptions
+        {
+            AudioData = BinaryData.FromStream(audioStream),
+            DeploymentName = this.DeploymentOrModelName,
+            Prompt = string.Empty, // TODO
+            Temperature = 0, // TODO
+            //ResponseFormat = AudioTranscriptionFormat.Simple, Srt, Verbose, Vtt
+        };
+        //var response2 = await RunRequestAsync(() => this.Client.GetAudioTranslationAsync(translationOptions, cancellationToken)).ConfigureAwait(false);
+
+        return response.Value.Text;
     }
 
     internal void AddAttribute(string key, string? value)

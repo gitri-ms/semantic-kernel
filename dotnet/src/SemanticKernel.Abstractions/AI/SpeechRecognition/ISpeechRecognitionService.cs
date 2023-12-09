@@ -8,8 +8,10 @@ using System.IO;
 namespace Microsoft.SemanticKernel.AI.SpeechRecognition;
 public interface ISpeechRecognitionService : IAIService
 {
-    Task<string> TranscribeAsync(
+    Task<string> GetTextFromSpeechAsync(
         Stream data,
+        string? prompt = null,
+        PromptExecutionSettings? promptExecutionSettings = null,
         Kernel? kernel = null,
         CancellationToken cancellationToken = default);
 }

@@ -2,11 +2,9 @@
 
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI.SpeechRecognition;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using RepoUtils;
 using Resources;
 
@@ -20,7 +18,7 @@ public static class Example73_SpeechRecognition
     {
         string apiKey = TestConfiguration.AzureOpenAISpeech.ApiKey;
         string endpoint = TestConfiguration.AzureOpenAISpeech.Endpoint;
-        string modelId = TestConfiguration.AzureOpenAISpeech.DeploymentName;
+        string deploymentName = TestConfiguration.AzureOpenAISpeech.DeploymentName;
         string apiVersion = TestConfiguration.AzureOpenAISpeech.ApiVersion;
 
         /*if (apiKey == null || apiVersion == null || modelId == null || endpoint == null)
@@ -32,7 +30,7 @@ public static class Example73_SpeechRecognition
         var kernel = new KernelBuilder()
             .WithLoggerFactory(ConsoleLogger.LoggerFactory)
             .WithAzureOpenAISpeechRecognition(
-                modelId: modelId, // TODO: change to deploymentName
+                deploymentName: deploymentName, // TODO: change to deploymentName
                 endpoint: endpoint,
                 apiKey: apiKey,
                 apiVersion: apiVersion,
@@ -41,9 +39,9 @@ public static class Example73_SpeechRecognition
 
         var whisperService = kernel.GetRequiredService<ISpeechRecognitionService>();
 
-        var data = EmbeddedResource.ReadStream("SpeechRecognition.wikipediaOcelot.wav") ?? throw new FileNotFoundException("Missing required resource");
+        var audioStream = EmbeddedResource.ReadStream("SpeechRecognition.wikipediaOcelot.wav") ?? throw new FileNotFoundException("Missing required resource");
 
-        var output = await whisperService.TranscribeAsync(data, kernel);
+        var output = await whisperService.GetTextFromSpeechAsync(audioStream, null, null, kernel);
         Console.WriteLine(output);
     }
 }
