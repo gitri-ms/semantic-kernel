@@ -19,21 +19,19 @@ public static class Example73_SpeechRecognition
         string apiKey = TestConfiguration.AzureOpenAISpeech.ApiKey;
         string endpoint = TestConfiguration.AzureOpenAISpeech.Endpoint;
         string deploymentName = TestConfiguration.AzureOpenAISpeech.DeploymentName;
-        string apiVersion = TestConfiguration.AzureOpenAISpeech.ApiVersion;
 
-        /*if (apiKey == null || apiVersion == null || modelId == null || endpoint == null)
+        if (apiKey == null || deploymentName == null || endpoint == null)
         {
-            Console.WriteLine("Azure endpoint, apiKey, deploymentName or modelId not found. Skipping example.");
+            Console.WriteLine("Azure endpoint, apiKey, or deploymentName not found. Skipping example.");
             return;
-        }*/
+        }
 
         var kernel = new KernelBuilder()
             .WithLoggerFactory(ConsoleLogger.LoggerFactory)
             .WithAzureOpenAISpeechRecognition(
-                deploymentName: deploymentName, // TODO: change to deploymentName
+                deploymentName: deploymentName,
                 endpoint: endpoint,
                 apiKey: apiKey,
-                apiVersion: apiVersion,
                 serviceId: "Whisper")
             .Build();
 

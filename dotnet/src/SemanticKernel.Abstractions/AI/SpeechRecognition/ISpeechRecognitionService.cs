@@ -9,9 +9,9 @@ namespace Microsoft.SemanticKernel.AI.SpeechRecognition;
 public interface ISpeechRecognitionService : IAIService
 {
     Task<string> GetTextFromSpeechAsync(
-        Stream data,
+        Stream audioStream,
         string? prompt = null,
-        PromptExecutionSettings? promptExecutionSettings = null,
+        PromptExecutionSettings? executionSettings = null,
         Kernel? kernel = null,
         CancellationToken cancellationToken = default);
 }

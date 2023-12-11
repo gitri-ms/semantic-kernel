@@ -1234,7 +1234,6 @@ public static class OpenAIServiceCollectionExtensions
         string deploymentName,
         string endpoint,
         string apiKey,
-        string apiVersion,
         string? serviceId = null,
         HttpClient? httpClient = null)
     {
@@ -1249,7 +1248,6 @@ public static class OpenAIServiceCollectionExtensions
                     deploymentName,
                     endpoint,
                     apiKey,
-                    apiVersion,
                     HttpClientProvider.GetHttpClient(httpClient, serviceProvider),
                     serviceProvider.GetService<ILoggerFactory>()));
         });
@@ -1260,7 +1258,6 @@ public static class OpenAIServiceCollectionExtensions
         string deploymentName,
         string endpoint,
         string apiKey,
-        string apiVersion,
         string? serviceId = null)
     {
         Verify.NotNull(services);
@@ -1272,7 +1269,6 @@ public static class OpenAIServiceCollectionExtensions
                 deploymentName,
                 endpoint,
                 apiKey,
-                apiVersion,
                 HttpClientProvider.GetHttpClient(serviceProvider),
                 serviceProvider.GetService<ILoggerFactory>()));
     }
