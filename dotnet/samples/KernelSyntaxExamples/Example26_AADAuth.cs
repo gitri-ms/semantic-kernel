@@ -4,8 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.AI.ChatCompletion;
-using RepoUtils;
+using Microsoft.SemanticKernel.ChatCompletion;
 
 /**
  * This example shows how to connect your app to Azure OpenAI using
@@ -41,15 +40,13 @@ public static class Example26_AADAuth
             ExcludeAzurePowerShellCredential = true
         };
 
-        Kernel kernel = new KernelBuilder()
-            .WithLoggerFactory(ConsoleLogger.LoggerFactory)
+        Kernel kernel = Kernel.CreateBuilder()
             // Add Azure OpenAI chat completion service using DefaultAzureCredential AAD auth
-            .WithAzureOpenAIChatCompletion(
-                TestConfiguration.AzureOpenAI.ChatDeploymentName,
-                TestConfiguration.AzureOpenAI.ChatModelId,
-                TestConfiguration.AzureOpenAI.Endpoint,
-                new DefaultAzureCredential(authOptions))
-        .Build();
+            .AddAzureOpenAIChatCompletion(
+                deploymentName: TestConfiguration.AzureOpenAI.ChatDeploymentName,
+                endpoint: TestConfiguration.AzureOpenAI.Endpoint,
+                credentials: new DefaultAzureCredential(authOptions))
+            .Build();
 
         IChatCompletionService chatGPT = kernel.GetRequiredService<IChatCompletionService>();
         var chatHistory = new ChatHistory();

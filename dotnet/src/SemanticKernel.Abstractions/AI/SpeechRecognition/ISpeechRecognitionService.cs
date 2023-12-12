@@ -5,7 +5,7 @@ using System.Threading;
 using Microsoft.SemanticKernel.Services;
 using System.IO;
 
-namespace Microsoft.SemanticKernel.AI.SpeechRecognition;
+namespace Microsoft.SemanticKernel.SpeechRecognition;
 public interface ISpeechRecognitionService : IAIService
 {
     Task<string> GetTextFromSpeechAsync(

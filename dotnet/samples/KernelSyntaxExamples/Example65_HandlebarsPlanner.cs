@@ -55,23 +55,22 @@ public static class Example65_HandlebarsPlanner
             return;
         }
 
-        var kernel = new KernelBuilder()
-            .WithLoggerFactory(ConsoleLogger.LoggerFactory)
-            .WithAzureOpenAIChatCompletion(
+        var kernel = Kernel.CreateBuilder()
+            .AddAzureOpenAIChatCompletion(
                 deploymentName: chatDeploymentName,
-                modelId: chatModelId,
                 endpoint: endpoint,
                 serviceId: "AzureOpenAIChat",
-                apiKey: apiKey)
+                apiKey: apiKey,
+                modelId: chatModelId)
             .Build();
 
         if (pluginDirectoryNames[0] == StringParamsDictionaryPlugin.PluginName)
         {
-            kernel.ImportPluginFromObject(new StringParamsDictionaryPlugin(), StringParamsDictionaryPlugin.PluginName);
+            kernel.ImportPluginFromType<StringParamsDictionaryPlugin>(StringParamsDictionaryPlugin.PluginName);
         }
         else if (pluginDirectoryNames[0] == ComplexParamsDictionaryPlugin.PluginName)
         {
-            kernel.ImportPluginFromObject(new ComplexParamsDictionaryPlugin(), ComplexParamsDictionaryPlugin.PluginName);
+            kernel.ImportPluginFromType<ComplexParamsDictionaryPlugin>(ComplexParamsDictionaryPlugin.PluginName);
         }
         else if (pluginDirectoryNames[0] == CourseraPluginName)
         {
@@ -114,7 +113,7 @@ public static class Example65_HandlebarsPlanner
         Console.WriteLine($"\nOriginal plan:\n{plan}");
 
         // Execute the plan
-        var result = plan.Invoke(kernel, new KernelArguments(), CancellationToken.None);
+        var result = await plan.InvokeAsync(kernel, new KernelArguments(), CancellationToken.None);
         Console.WriteLine($"\nResult:\n{result}\n");
     }
 

@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.AI;
-using RepoUtils;
 
 // ReSharper disable once InconsistentNaming
 public static class Example61_MultipleLLMs
@@ -37,18 +35,17 @@ public static class Example61_MultipleLLMs
             return;
         }
 
-        Kernel kernel = new KernelBuilder()
-            .WithLoggerFactory(ConsoleLogger.LoggerFactory)
-            .WithAzureOpenAIChatCompletion(
+        Kernel kernel = Kernel.CreateBuilder()
+            .AddAzureOpenAIChatCompletion(
                 deploymentName: azureDeploymentName,
                 endpoint: azureEndpoint,
+                apiKey: azureApiKey,
                 serviceId: "AzureOpenAIChat",
-                modelId: azureModelId,
-                apiKey: azureApiKey)
-            .WithOpenAIChatCompletion(
+                modelId: azureModelId)
+            .AddOpenAIChatCompletion(
                 modelId: openAIModelId,
-                serviceId: "OpenAIChat",
-                apiKey: openAIApiKey)
+                apiKey: openAIApiKey,
+                serviceId: "OpenAIChat")
             .Build();
 
         await RunByServiceIdAsync(kernel, "AzureOpenAIChat");
