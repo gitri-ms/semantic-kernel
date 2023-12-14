@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="SemanticKernel.Connectors.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.SemanticKernel.Planners.OpenAI.UnitTests"/>
   </ItemGroup>
 
   <ItemGroup>
