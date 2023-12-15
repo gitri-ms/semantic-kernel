@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using Azure.AI.OpenAI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -17,7 +18,7 @@ public sealed class FunctionCallingStepwisePlannerTests
     {
         // Arrange
         var plugins = this.CreatePluginCollection();
-        var kernel = this.CreateKernelWithMockCompletionResult(goal, plugins);
+        var kernel = this.CreateKernelWithMockCompletionResult(plugins);
         var planner = new FunctionCallingStepwisePlanner();
 
         // Act
@@ -32,7 +33,7 @@ public sealed class FunctionCallingStepwisePlannerTests
     public async Task EmptyGoalThrowsAsync()
     {
         // Arrange
-        var kernel = this.CreateKernelWithMockCompletionResult("");
+        var kernel = this.CreateKernelWithMockCompletionResult();
 
         var planner = new FunctionCallingStepwisePlanner();
 
@@ -40,20 +41,7 @@ public sealed class FunctionCallingStepwisePlannerTests
         await Assert.ThrowsAsync<ArgumentException>(async () => await planner.ExecuteAsync(kernel, string.Empty));
     }
 
-    [Fact]
-    public async Task InvalidHandlebarsTemplateThrowsAsync()
-    {
-        // Arrange
-        var kernel = this.CreateKernelWithMockCompletionResult("");
-
-        var planner = new FunctionCallingStepwisePlanner();
-
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<KernelException>(async () => await planner.ExecuteAsync(kernel, "goal"));
-        Assert.True(exception?.Message?.Contains("Could not find the plan in the results", StringComparison.InvariantCulture));
-    }
-
-    private Kernel CreateKernelWithMockCompletionResult(string goal, KernelPluginCollection? plugins = null)
+    private Kernel CreateKernelWithMockCompletionResult(KernelPluginCollection? plugins = null)
     {
         plugins ??= new KernelPluginCollection();
 
@@ -141,7 +129,13 @@ public sealed class FunctionCallingStepwisePlannerTests
 
     private readonly ChatMessageContent _chatMessageContent1 = new(AuthorRole.Assistant, content: null, innerContent: null);
 
-    //private readonly OpenAIChatMessageContent openaiContent = new OpenAIChatMessageContent();
+    private readonly OpenAIChatMessageContent openaiContent = new OpenAIChatMessageContent(
+        AuthorRole.Assistant,
+        null,
+        "",
+        null);
+
+    //var toolCallSendEmail = new ChatCompletionsFunctionToolCall(); { Name = "", Arguments = null, Id = "" };
 
     // how to handle "perform the next step of the plan"?
 
@@ -153,6 +147,9 @@ public sealed class FunctionCallingStepwisePlannerTests
     // user: perform next step
     // assistant
     // user: perform next step
-    // assistant: 
+    // assistant:
+
+
+    // Mock our helper that parses the function call object from OpenAI?
 
 }
