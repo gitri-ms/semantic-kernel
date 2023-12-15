@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
@@ -34,7 +35,23 @@ public static class Example66_FunctionCallingStepwisePlanner
             Console.WriteLine($"Q: {question}\nA: {result.FinalAnswer}");
 
             // You can uncomment the line below to see the planner's process for completing the request.
-            // Console.WriteLine($"Chat history:\n{System.Text.Json.JsonSerializer.Serialize(result.ChatHistory)}");
+            //Console.WriteLine($"Chat history:\n{System.Text.Json.JsonSerializer.Serialize(result.ChatHistory)}");
+            foreach (ChatMessageContent item in result.ChatHistory!)
+            {
+                Console.WriteLine($"[\nRole: {item.Role}");
+                if (item.Content != null)
+                {
+                    Console.WriteLine($"Content: {item.Content}");
+                }
+                if (item.Metadata != null && item.Metadata.TryGetValue("ChatResponseMessage.ToolCalls", out object? value))
+                {
+                    Console.WriteLine($"{JsonSerializer.Serialize(value, new JsonSerializerOptions { WriteIndented = true })}");
+                }
+                Console.WriteLine("]");
+                //item.
+                // Metadata - ChatResponseMessage.ToolCalls, value.Function.Name / value.Function.Arguments, value.Function.Id
+                // ChatCompletionsToolCall.Id,
+            }
         }
     }
 
