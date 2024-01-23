@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
 using Microsoft.SemanticKernel.Plugins.Core;
+using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Plugins;
 using Xunit;
 using Xunit.Abstractions;
@@ -21,7 +23,7 @@ public class Example66_FunctionCallingStepwisePlanner : BaseTest
             "Write a limerick, translate it to Spanish, and send it to Jane",
         };
 
-        var kernel = InitializeKernel();
+        var kernel = await InitializeKernelAsync();
 
         var config = new FunctionCallingStepwisePlannerConfig
         {
@@ -44,7 +46,7 @@ public class Example66_FunctionCallingStepwisePlanner : BaseTest
     /// Initialize the kernel and load plugins.
     /// </summary>
     /// <returns>A kernel instance</returns>
-    private static Kernel InitializeKernel()
+    private static async Task<Kernel> InitializeKernelAsync()
     {
         Kernel kernel = Kernel.CreateBuilder()
             .AddOpenAIChatCompletion(
@@ -55,6 +57,10 @@ public class Example66_FunctionCallingStepwisePlanner : BaseTest
         kernel.ImportPluginFromType<EmailPlugin>();
         kernel.ImportPluginFromType<MathPlugin>();
         kernel.ImportPluginFromType<TimePlugin>();
+        await kernel.ImportPluginFromOpenApiAsync(
+            "CourseraPlugin",
+            new Uri("https://www.coursera.org/api/rest/v1/search/openapi.yaml")
+        );
 
         return kernel;
     }

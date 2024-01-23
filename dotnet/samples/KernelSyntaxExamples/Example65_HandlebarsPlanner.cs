@@ -25,7 +25,7 @@ public class Example65_HandlebarsPlanner : BaseTest
     {
         WriteLine($"======== [Handlebars Planner] Sample {s_sampleIndex++} - Create and Execute Plan with: {name} ========");
     }
-    private async Task RunSampleAsync(string goal, bool shouldPrintPrompt = false, params string[] pluginDirectoryNames)
+    private async Task RunSampleAsync(string goal, bool shouldPrintPrompt = true, params string[] pluginDirectoryNames)
     {
         string apiKey = TestConfiguration.AzureOpenAI.ApiKey;
         string chatDeploymentName = TestConfiguration.AzureOpenAI.ChatDeploymentName;
@@ -105,7 +105,7 @@ public class Example65_HandlebarsPlanner : BaseTest
 
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(false)]
-    public async Task PlanNotPossibleSampleAsync(bool shouldPrintPrompt = false)
+    public async Task PlanNotPossibleSampleAsync(bool shouldPrintPrompt = true)
     {
         WriteSampleHeading("Plan Not Possible");
 
@@ -135,7 +135,7 @@ public class Example65_HandlebarsPlanner : BaseTest
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(true)]
 
-    public Task RunCourseraSampleAsync(bool shouldPrintPrompt = false)
+    public Task RunCourseraSampleAsync(bool shouldPrintPrompt = true)
     {
         this.WriteSampleHeading("Coursera OpenAPI Plugin");
         return RunSampleAsync("Show me courses about Artificial Intelligence.", shouldPrintPrompt, CourseraPluginName);
@@ -143,7 +143,7 @@ public class Example65_HandlebarsPlanner : BaseTest
 
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(false)]
-    public Task RunDictionaryWithBasicTypesSampleAsync(bool shouldPrintPrompt = false)
+    public Task RunDictionaryWithBasicTypesSampleAsync(bool shouldPrintPrompt = true)
     {
         this.WriteSampleHeading("Basic Types using Local Dictionary Plugin");
         return RunSampleAsync("Get a random word and its definition.", shouldPrintPrompt, StringParamsDictionaryPlugin.PluginName);
@@ -165,7 +165,7 @@ public class Example65_HandlebarsPlanner : BaseTest
 
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(true)]
-    public Task RunLocalDictionaryWithComplexTypesSampleAsync(bool shouldPrintPrompt = false)
+    public Task RunLocalDictionaryWithComplexTypesSampleAsync(bool shouldPrintPrompt = true)
     {
         this.WriteSampleHeading("Complex Types using Local Dictionary Plugin");
         return RunSampleAsync("Teach me two random words and their definition.", shouldPrintPrompt, ComplexParamsDictionaryPlugin.PluginName);
@@ -201,7 +201,7 @@ public class Example65_HandlebarsPlanner : BaseTest
 
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(false)]
-    public Task RunPoetrySampleAsync(bool shouldPrintPrompt = false)
+    public Task RunPoetrySampleAsync(bool shouldPrintPrompt = true)
     {
         this.WriteSampleHeading("Multiple Plugins");
         return RunSampleAsync("Write a poem about John Doe, then translate it into Italian.", shouldPrintPrompt, "SummarizePlugin", "WriterPlugin");
@@ -230,7 +230,7 @@ public class Example65_HandlebarsPlanner : BaseTest
 
     [RetryTheory(typeof(HttpOperationException))]
     [InlineData(false)]
-    public Task RunBookSampleAsync(bool shouldPrintPrompt = false)
+    public Task RunBookSampleAsync(bool shouldPrintPrompt = true)
     {
         this.WriteSampleHeading("Loops and Conditionals");
         return RunSampleAsync("Create a book with 3 chapters about a group of kids in a club called 'The Thinking Caps.'", shouldPrintPrompt, "WriterPlugin", "MiscPlugin");

@@ -81,6 +81,16 @@ internal static class KernelSystemHelpers
             variables[name] = value;
         });
 
+        handlebarsInstance.RegisterHelper("get", (in HelperOptions options, in Context context, in Arguments arguments) =>
+        {
+            if (arguments[0].GetType() == typeof(HashParameterDictionary))
+            {
+                var parameters = (IDictionary<string, object>)arguments[0];
+                return variables[(string)parameters!["name"]];
+            }
+            return variables[arguments[0].ToString()];
+        });
+
         handlebarsInstance.RegisterHelper("json", (in HelperOptions options, in Context context, in Arguments arguments) =>
         {
             if (arguments.Length == 0)
