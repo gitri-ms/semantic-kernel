@@ -57,6 +57,48 @@ public sealed class HandlebarsPlanTests
         Assert.Contains("Template references a helper that cannot be resolved.", exception.InnerException.Message, StringComparison.CurrentCultureIgnoreCase);
     }
 
+    [Fact]
+    public async Task InvokePlanWithParentNotationAsync()
+    {
+        var planWithParentNotation = @"";
+
+        var result = await this.InvokePlanAsync(planWithParentNotation);
+    }
+
+    [Fact]
+    public async Task InvokePlanWithObjectDotNotationAsync()
+    {
+        var planWithObjectDotNotation = @"";
+
+        var result = await this.InvokePlanAsync(planWithObjectDotNotation);
+    }
+
+    [Fact]
+    public async Task InvokePlanWithArrayNotationAsync()
+    {
+        var planWithArrayNotation = @"";
+
+        var result = await this.InvokePlanAsync(planWithArrayNotation);
+    }
+    /*[1:32 PM] Matthew Bolanos
+Now I'm wondering if using "../sum" also works (?) It'd be good to have some integration tests that include a few of the different path expressions in handlebars:
+../ (parent notation)
+coordinate.x (object dot notation)
+arr.[0] (array notation)
+Expressions | Handlebars
+[1:34 PM] Matthew Bolanos
+Ah! So this is how they fixed it...
+If the argument is of type UndefinedBindingResult, it means that Handlebars attempted to retrieve the value for a binding but was unable to do so because the variable was not defined or not passed to the template context at the time of render. Thus, we try to get the value from the kernel arguments dictionary.
+I think that makes sense... I wonder how that behaves when you combine it with path expressions.
+[1:35 PM] Matthew Bolanos
+For example...
+ 
+{{set "arr" (range 0 10)}}
+{{#each arr}}
+    {{arr.[0]}}
+{{/each}}
+    */
+
     #region private
 
     private readonly Kernel _kernel;

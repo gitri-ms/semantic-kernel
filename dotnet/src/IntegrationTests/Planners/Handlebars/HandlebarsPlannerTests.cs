@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning.Handlebars;
+using Microsoft.SemanticKernel.Plugins.Core;
 using SemanticKernel.IntegrationTests.Fakes;
 using SemanticKernel.IntegrationTests.TestSettings;
 using xRetry;
@@ -27,6 +28,34 @@ public sealed class HandlebarsPlannerTests : IDisposable
             .AddUserSecrets<HandlebarsPlannerTests>()
             .Build();
     }
+
+    [Fact]
+    public async Task CreateAndExecutePlanWithLoopAsync()
+    {
+        // Arrange
+        Kernel kernel = this.InitializeKernel();
+        kernel.ImportPluginFromType<MathPlugin>();
+        string prompt = "What is the sum of all of the numbers between 1 and 100?";
+
+        // Act
+        var plan = await new HandlebarsPlanner(new HandlebarsPlannerOptions() { AllowLoops = true }).CreatePlanAsync(kernel, prompt);
+
+        // Assert
+        Assert.Contains(
+            "MathPlugin-Add",
+            plan.ToString(),
+            StringComparison.CurrentCulture
+        );
+
+        var result = await plan.InvokeAsync(kernel);
+
+        Assert.Contains(
+            "5050",
+            result,
+            StringComparison.CurrentCulture
+        );
+    }
+
 
     [Theory]
     [InlineData(true, "Write a joke and send it in an e-mail to Kai.", "SendEmail", "test")]

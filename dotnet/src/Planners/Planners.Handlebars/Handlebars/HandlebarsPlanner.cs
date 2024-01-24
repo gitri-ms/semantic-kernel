@@ -40,8 +40,18 @@ public sealed class HandlebarsPlanner
     {
         this._options = options ?? new HandlebarsPlannerOptions();
         this._templateFactory = new HandlebarsPromptTemplateFactory(options: PromptTemplateOptions);
+        this._executionSettings = new PromptExecutionSettings()
+        {
+            ExtensionData = new Dictionary<string, object>()
+            {
+                { "temperature", 0.0 },
+                { "top_p", 0.0 },
+                { "presence_penalty", 0.0 },
+                { "frequency_penalty", 0.0 },
+            }
+        }; // TODO: make configurable
     }
-
+    
     /// <summary>Creates a plan for the specified goal.</summary>
     /// <param name="kernel">The <see cref="Kernel"/> containing services, plugins, and other state for use throughout the operation.</param>
     /// <param name="goal">The goal for which a plan should be created.</param>
@@ -65,6 +75,7 @@ public sealed class HandlebarsPlanner
     #region private
 
     private readonly HandlebarsPlannerOptions _options;
+    private readonly PromptExecutionSettings _executionSettings;
 
     private HandlebarsPromptTemplateFactory _templateFactory { get; }
 
@@ -82,7 +93,7 @@ public sealed class HandlebarsPlanner
 
         // Get the chat completion results
         var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
-        var completionResults = await chatCompletionService.GetChatMessageContentAsync(chatMessages, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var completionResults = await chatCompletionService.GetChatMessageContentAsync(chatMessages, executionSettings: this._executionSettings, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         // Check if plan could not be created due to insufficient functions
         if (completionResults.Content is not null && completionResults.Content.IndexOf(InsufficientFunctionsError, StringComparison.OrdinalIgnoreCase) >= 0)
