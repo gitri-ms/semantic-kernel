@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading;
 using HandlebarsDotNet;
 using HandlebarsDotNet.Compiler;
@@ -223,12 +224,17 @@ internal static class KernelFunctionHelpers
         if (result.ValueType is not null && result.ValueType != typeof(string))
         {
             // Serialize then deserialize the result to ensure it is parsed as the correct type with appropriate property casing
-            var serializedResult = JsonSerializer.Serialize(resultAsObject);
-            return JsonSerializer.Deserialize(serializedResult, result.ValueType);
+            var serializedResult = JsonSerializer.Serialize(resultAsObject, s_jsonSerializerOptions);
+            return JsonSerializer.Deserialize(serializedResult, result.ValueType, s_jsonSerializerOptions);
         }
 
         return resultAsObject;
     }
+
+    private static readonly JsonSerializerOptions s_jsonSerializerOptions = new()
+    {
+        NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+    };
 
     #endregion
 }
