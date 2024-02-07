@@ -293,6 +293,7 @@ public sealed class FunctionCallingStepwisePlanner
     {
         public void OnToolInvoking(ToolInvokingContext context)
         {
+            context.ToolCallBehavior = null; // turn off subsequent tool calls
         }
         
         public void OnToolInvoked(ToolInvokedContext context)
@@ -300,7 +301,7 @@ public sealed class FunctionCallingStepwisePlanner
             //context.Cancel = true;
             //context.Arguments["foo"] = "bar";
             //context.ChatHistory.AddSystemMessage("TestFilter was here");
-            context.ToolCallBehavior = null; // turn off subsequent tool calls
+            //context.ToolCallBehavior = null; // turn off subsequent tool calls
         }
     }
 }

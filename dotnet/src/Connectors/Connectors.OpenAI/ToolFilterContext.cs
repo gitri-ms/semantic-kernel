@@ -82,11 +82,4 @@ public abstract class ToolFilterContext // TODO: make experimental?
     /// Gets the tool call behavior associated with the operation.
     /// </summary>
     public ToolCallBehavior? ToolCallBehavior { get; set; }
-
-
-
-    public ToolFilterStopBehavior StopBehavior { get; set; } = ToolFilterStopBehavior.None;
-
-
 }
-

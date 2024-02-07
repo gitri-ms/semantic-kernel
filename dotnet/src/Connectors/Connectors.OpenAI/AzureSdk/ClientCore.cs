@@ -355,7 +355,18 @@ internal abstract class ClientCore
                     var invokingContext = chatExecutionSettings.ToolCallBehavior?.OnToolInvokingFilter(function, functionArgs, iteration, chat);
                     if (invokingContext is not null)
                     {
-                        this.HandleStopBehavior(invokingContext, chatOptions, ref autoInvoke);
+                        if (invokingContext.Cancel)
+                        {
+
+                        }
+                        // TODO
+                        // Handle cancellation
+                        // Update auto invoke / tool call behavior
+                        // update chat options
+
+                        // TODO: with this approach, clearing out the tools (setting to null) will also kill any post-invoke filters
+                        chatExecutionSettings.ToolCallBehavior = invokingContext.ToolCallBehavior;
+
                     }
 
                     // Note that we explicitly do not use executionSettings here; those pertain to the all-up operation and not necessarily to any
@@ -369,9 +380,9 @@ internal abstract class ClientCore
                     {
                         // Need to update the chat options in case chat history has changed (before or after new message)?
                         // TODO: if tools were turned off in invoking filter, that might get overwritten here
-                        chatOptions = CreateChatCompletionsOptions(chatExecutionSettings, chat, kernel, this.DeploymentOrModelName);
+                        // chatOptions = CreateChatCompletionsOptions(chatExecutionSettings, chat, kernel, this.DeploymentOrModelName);
 
-                        this.HandleStopBehavior(invokedContext, chatOptions, ref autoInvoke);
+                        // TODO
                     }
 
                     functionResultObj = functionResult.GetValue<object>() ?? string.Empty;
@@ -433,21 +444,6 @@ internal abstract class ClientCore
                     this.Logger.LogDebug("Maximum auto-invoke ({MaximumAutoInvoke}) reached.", chatExecutionSettings.ToolCallBehavior!.MaximumAutoInvokeAttempts);
                 }
             }
-        }
-    }
-
-    private void HandleStopBehavior(ToolFilterContext context, ChatCompletionsOptions chatOptions, ref bool autoInvoke)
-    {
-        switch (context.StopBehavior)
-        {
-            case ToolFilterStopBehavior.StopAutoInvoke:
-                autoInvoke = false;
-                break;
-            case ToolFilterStopBehavior.StopTools:
-                chatOptions.ToolChoice = ChatCompletionsToolChoice.None;
-                break;
-            case ToolFilterStopBehavior.Cancel:
-                throw new OperationCanceledException("A tool filter requested cancellation.");
         }
     }
 
